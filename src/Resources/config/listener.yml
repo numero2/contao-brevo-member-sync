@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        public: true
+
+    numero2_brevo_member_sync.listener.data_container.module:
+        class: numero2\BrevoMemberSyncBundle\EventListener\DataContainer\ModuleListener
+
+    numero2_brevo_member_sync.listener.hooks.brevo:
+        class: numero2\BrevoMemberSyncBundle\EventListener\Hooks\BrevoListener

@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<xliff version="1.1">
+<file>
+<body>
+    <!-- LEGENDS -->
+    <trans-unit id="tl_module.brevo_legend">
+        <target>Brevo</target>
+    </trans-unit>
+    <!-- FIELDS -->
+    <trans-unit id="tl_module.brevo_sync.0">
+        <target>Synchronisierung aktivieren</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_sync.1">
+        <target>Bitten wählen Sie ob die Mitglieder über dieses Modul mit Brevo synchronisiert werden sollen.</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_api_key.0">
+        <target>API Schlüssel</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_api_key.1">
+        <target>Bitte geben Sie den API Schlüssel ein, der verwendet werden soll.</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_list_ids.0">
+        <target>Listen IDs</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_list_ids.1">
+        <target>Bitte geben Sie kommagetrennt an in welche Liste(n) dieser Kontakt eingetragen werden soll.</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_mapping.0">
+        <target>Zuordnung Contao Mitglied zu Brevo</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_mapping.1">
+        <target>Bitte geben Sie unter "Schlüssel" an welches Contao Mitgliederfeld dem Feld unter "Wert" in Brevo zu geordnet werden soll.</target>
+    </trans-unit>
+</body>
+</file>
+</xliff>

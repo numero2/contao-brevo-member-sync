@@ -1,0 +1,28 @@
+{
+    "name": "numero2/contao-brevo-member-sync",
+    "type": "contao-bundle",
+    "description": "Sync member to brevo on registration and peronal data",
+    "license": "LGPL-3.0+",
+    "require": {
+        "contao/core-bundle": "^4.9",
+        "getbrevo/brevo-php": "^1.0"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.0"
+    },
+    "conflict": {
+        "contao/core": "*",
+        "contao/manager-plugin": "<2.0 || >=3.0"
+    },
+    "extra": {
+        "contao-manager-plugin": "numero2\\BrevoMemberSyncBundle\\ContaoManager\\Plugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "numero2\\BrevoMemberSyncBundle\\": "src/"
+        },
+        "classmap": [
+            "src/Resources/contao/"
+        ]
+    }
+}
