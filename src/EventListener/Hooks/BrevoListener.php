@@ -6,31 +6,24 @@
  * @author    Benny Born <benny.born@numero2.de>
  * @author    Michael Bösherz <michael.boesherz@numero2.de>
  * @license   Commercial
- * @copyright Copyright (c) 2023, numero2 - Agentur für digitales Marketing GbR
+ * @copyright Copyright (c) 2024, numero2 - Agentur für digitales Marketing GbR
  */
 
 
 namespace numero2\BrevoMemberSyncBundle\EventListener\Hooks;
 
-use Brevo\Client\Api\ContactsApi;
-use Brevo\Client\ApiException;
-use Brevo\Client\Configuration;
-use Brevo\Client\Model\CreateContact;
-use Brevo\Client\Model\UpdateContact;
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\FrontendUser;
 use Contao\MemberModel;
 use Contao\StringUtil;
-use Contao\System;
-use Exception;
-use GuzzleHttp\Client;
+use numero2\BrevoMemberSyncBundle\API\BrevoListenerAPI;
 
 
 class BrevoListener {
 
 
     /**
-     * Sets email as username for frontend user
+     * Create or update a user at Brevo
      *
      * @param integer|\Contao\FrontendUser $id
      * @param array $arrData
@@ -45,98 +38,53 @@ class BrevoListener {
             return;
         }
 
-        // Configure API key authorization: api-key
-        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $module->brevo_api_key);
-
-        $apiInstance = new ContactsApi(new Client(), $config);
+        $api = new BrevoListenerAPI($module->brevo_api_key);
 
         $oUser = null;
         $brevoId = null;
-        $brevoContact = null;
+        $blnUpdate = false;
 
         // mod_personaldata
         if( $id instanceof FrontendUser ) {
 
             $oUser = $id;
             $brevoId = $oUser->brevo_id;
-            $brevoContact = new UpdateContact();
-
-            if( empty($brevoId) ) {
-
-                $brevoContact = new CreateContact();
-                $brevoContact['email'] = $oUser->email;
-            }
+            $blnUpdate = !empty($brevoId);
 
         // mod_registration
         } else {
 
             $oUser = MemberModel::findById($id);
-
-            if( !empty($arrData['email']) ) {
-
-                $brevoContact = new CreateContact();
-                $brevoContact['email'] = $arrData['email'];
-            }
         }
 
-        $brevoContact['listIds'] = array_map(function( $a ) {
+        $listIds = array_map(function( $a ) {
             return intval(trim($a));
         }, explode(',', $module->brevo_list_ids));
 
-        $attributes = [];
+
+        $contact = [
+            'EMAIL' => $oUser->email
+        ];
+
         $map = StringUtil::deserialize($module->brevo_mapping, true);
 
         foreach( $map as $row ) {
+
             $key = $row['key'];
             $value = $row['value'];
-            $attributes[$value] = $oUser->{$key};
+            $contact[$value] = $oUser->{$key};
         }
 
-        if( empty($attributes) ) {
-            $attributes['EMAIL'] = $oUser->email;
+        $resultId = 0;
+        if( $blnUpdate ) {
+            $resultId = $api->updateContact($brevoId, $contact, $listIds);
+        } else {
+            $resultId = $api->createContact($contact, $listIds);
         }
-        $brevoContact['attributes'] = $attributes;
 
-        try {
-
-            if( $brevoContact instanceof UpdateContact ) {
-
-                $apiInstance->updateContact($brevoId, $brevoContact);
-
-            } else if( $brevoContact instanceof CreateContact) {
-
-                $result = $apiInstance->createContact($brevoContact);
-
-                $oUser->brevo_id = $result->getId();
-                $oUser->save();
-            }
-
-        } catch( Exception $e ) {
-
-            if( $e instanceof ApiException ) {
-                // if contact already exist get id and save it
-                if( strpos($e->getResponseBody(), "Contact already exist") !== false ) {
-
-                    $result = $apiInstance->getContactInfo($brevoContact['email']);
-
-                    $oUser->brevo_id = $result->getId();
-                    $oUser->save();
-
-                    $this->createUpdateMember($id, $arrData, $module);
-                    return;
-
-                // if contact does not exist remove id
-                } else if( strpos($e->getResponseBody(), "Contact does not exist") !== false ) {
-
-                    $oUser->brevo_id = '';
-                    $oUser->save();
-
-                    $this->createUpdateMember($id, $arrData, $module);
-                    return;
-                }
-            }
-
-            System::log('Exception calling Brevo API: ', $e->getMessage(), __METHOD__, TL_ERROR);
+        if( $resultId ) {
+            $oUser->brevo_id = $resultId;
+            $oUser->save();
         }
     }
 }
