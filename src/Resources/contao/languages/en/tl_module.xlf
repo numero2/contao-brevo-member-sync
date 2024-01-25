@@ -31,6 +31,12 @@
     <trans-unit id="tl_module.brevo_mapping.1">
         <target>Bitte geben Sie unter "Schlüssel" an welches Contao Mitgliederfeld dem Feld unter "Wert" in Brevo zu geordnet werden soll.</target>
     </trans-unit>
+    <trans-unit id="tl_module.brevo_sync_with_member_groups.0">
+        <target>Synchronisierung aktivieren für Mitgliedergruppem</target>
+    </trans-unit>
+    <trans-unit id="tl_module.brevo_sync_with_member_groups.1">
+        <target>Bitten wählen Sie ob die Mitglieder über dieses Modul mit den Brevo Einstelleungen aus allen Mitgliedergruppen synchronisiert werden sollen.</target>
+    </trans-unit>
 </body>
 </file>
 </xliff>

@@ -6,7 +6,7 @@ Contao Brevo Member Sync Bundle
 About
 --
 
-Adds the possibility to synchronize the Contao members with [Brevo](https://brevo.com/). Therefore you have to configure the registration and personal data module.
+Adds the possibility to synchronize the Contao members with [Brevo](https://brevo.com/). Therefore you have to configure the registration and personal data module. Or configure the Brevo fields inside the member groups. Then the members will be automatically synced to Brevo after a change in the backend or start a manual sync after selecting some members. Every sync in the backend will only use the configuration from the member groups.
 
 System requirements
 --
@@ -22,4 +22,4 @@ Installation
 Configuration
 --
 
-Activate the "Sync" checkbox in the Brevo legend within the suitable modules and then configure the required fields.
+Activate the "Sync" checkbox in the Brevo legend within the suitable modules and then configure the required fields. Or activate the "Sync with member groups" and configure the Brevo fields inside the member groups.

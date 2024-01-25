@@ -48,7 +48,6 @@ class BrevoListenerAPI {
     }
 
 
-
     /**
      * Create a contact with the given data at brevo, which is added to the given lists.
      *
@@ -63,8 +62,7 @@ class BrevoListenerAPI {
             return 0;
         }
 
-        // Configure API key authorization: api-key
-        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $module->brevo_api_key);
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->apiKey);
 
         $apiContact = new ContactsApi(new Client(), $config);
 
@@ -139,8 +137,7 @@ class BrevoListenerAPI {
             return 0;
         }
 
-        // Configure API key authorization: api-key
-        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $apiKey);
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->apiKey);
 
         $apiContact = new ContactsApi(new Client(), $config);
 
@@ -193,7 +190,6 @@ class BrevoListenerAPI {
      */
     public function getContactAttributesConfig(): array {
 
-        // Configure API key authorization: api-key
         $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $this->apiKey);
 
         // use cache if possible

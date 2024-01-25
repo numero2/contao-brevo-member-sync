@@ -34,12 +34,12 @@ class ModuleListener {
      * @throws Exception
      *
      * @Callback(table="tl_module", target="fields.brevo_api_key.save")
+     * @Callback(table="tl_member_group", target="fields.brevo_api_key.save")
      */
     public function checkApiKey( string $varValue, DataContainer $dc ): string {
 
         if( !empty($varValue) ) {
 
-            // Configure API key authorization: api-key
             $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $varValue);
 
             $apiInstance = new AccountApi(new Client(), $config);
