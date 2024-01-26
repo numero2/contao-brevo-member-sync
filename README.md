@@ -23,3 +23,9 @@ Configuration
 --
 
 Activate the "Sync" checkbox in the Brevo legend within the suitable modules and then configure the required fields. Or activate the "Sync with member groups" and configure the Brevo fields inside the member groups.
+
+Contributors
+--
+
+- David Odenthal from [konversion.digital GmbH](https://konversion.digital/)
+- Thomas Kettner ([ThomasKettner](https://github.com/ThomasKettner)) from [eBlick Medienberatung](https://eblick-medienberatung.de/)
