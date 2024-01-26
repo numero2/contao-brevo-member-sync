@@ -74,7 +74,7 @@ class MemberListener {
             }
         } else { // fallback for 4.9
             $user = System::importStatic(BackendUser::class);
-            if( !$user->hasAccess('tl_page::alias', 'alexf') ) {
+            if( !$user->hasAccess('tl_member::groups', 'alexf') ) {
                 return $buttons;
             }
         }
