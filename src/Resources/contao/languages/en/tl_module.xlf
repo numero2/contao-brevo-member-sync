@@ -11,7 +11,7 @@
         <target>Synchronisierung aktivieren</target>
     </trans-unit>
     <trans-unit id="tl_module.brevo_sync.1">
-        <target>Bitten wählen Sie ob die Mitglieder über dieses Modul mit Brevo synchronisiert werden sollen.</target>
+        <target>Bitten wählen Sie, ob die Mitglieder über dieses Modul mit Brevo synchronisiert werden sollen.</target>
     </trans-unit>
     <trans-unit id="tl_module.brevo_api_key.0">
         <target>API Schlüssel</target>
@@ -32,10 +32,10 @@
         <target>Bitte geben Sie unter "Schlüssel" an welches Contao Mitgliederfeld dem Feld unter "Wert" in Brevo zu geordnet werden soll.</target>
     </trans-unit>
     <trans-unit id="tl_module.brevo_sync_with_member_groups.0">
-        <target>Synchronisierung aktivieren für Mitgliedergruppem</target>
+        <target>Synchronisierung aktivieren für Mitgliedergruppen</target>
     </trans-unit>
     <trans-unit id="tl_module.brevo_sync_with_member_groups.1">
-        <target>Bitten wählen Sie ob die Mitglieder über dieses Modul mit den Brevo Einstelleungen aus allen Mitgliedergruppen synchronisiert werden sollen.</target>
+        <target>Bitten wählen Sie, ob die Mitglieder über dieses Modul mit den Brevo Einstellungen aus ihren Mitgliedergruppen synchronisiert werden sollen.</target>
     </trans-unit>
 </body>
 </file>
