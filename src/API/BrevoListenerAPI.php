@@ -69,7 +69,7 @@ class BrevoListenerAPI {
         $brevoContact = new CreateContact();
         $brevoContact['email'] = $contact['EMAIL'];
 
-        if( empty($listIds) ) {
+        if( !empty($listIds) ) {
             $brevoContact['listIds'] = array_map(function( $a ) {
                 return intval(trim($a));
             }, $listIds);
