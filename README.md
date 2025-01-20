@@ -11,7 +11,7 @@ Adds the possibility to synchronize the Contao members with [Brevo](https://brev
 System requirements
 --
 
-* [Contao 4.9](https://github.com/contao/core) or newer
+* [Contao 4.13](https://github.com/contao/core) or newer
 
 Installation
 --

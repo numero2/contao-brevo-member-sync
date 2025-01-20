@@ -26,7 +26,7 @@ class BrevoListener {
     /**
      * Create or update a user at Brevo
      *
-     * @param integer|\Contao\FrontendUser $id
+     * @param integer|Contao\FrontendUser $id
      * @param array $arrData
      * @param Contao\Module $module
      *
@@ -102,7 +102,7 @@ class BrevoListener {
     /**
      * Create or update a user at Brevo with data from member groups
      *
-     * @param int|\Contao\FrontendUser $id
+     * @param int|Contao\FrontendUser $id
      * @param array $arrData
      * @param Contao\Module $module
      *

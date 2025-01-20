@@ -6,13 +6,12 @@
  * @author    Benny Born <benny.born@numero2.de>
  * @author    Michael Bösherz <michael.boesherz@numero2.de>
  * @license   Commercial
- * @copyright Copyright (c) 2024, numero2 - Agentur für digitales Marketing GbR
+ * @copyright Copyright (c) 2025, numero2 - Agentur für digitales Marketing GbR
  */
 
 
 namespace numero2\BrevoMemberSyncBundle\EventListener\DataContainer;
 
-use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\CoreBundle\ServiceAnnotation\Callback;
@@ -20,10 +19,15 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
 use numero2\BrevoMemberSyncBundle\EventListener\Hooks\BrevoListener;
-
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MemberListener {
 
+
+    /**
+     * @var Symfony\Component\HttpFoundation\RequestStack
+     */
+    private RequestStack $requestStack;
 
     /**
      * @var numero2\BrevoMemberSyncBundle\EventListener\Hooks\BrevoListener
@@ -31,8 +35,9 @@ class MemberListener {
     private $brevoListener;
 
 
-    public function __construct( BrevoListener $brevoListener ) {
+    public function __construct(  RequestStack $requestStack, BrevoListener $brevoListener ) {
 
+        $this->requestStack = $requestStack;
         $this->brevoListener = $brevoListener;
     }
 
@@ -72,17 +77,13 @@ class MemberListener {
             if( !System::getContainer()->get('security.helper')->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, 'tl_member::groups')) {
                 return $buttons;
             }
-        } else { // fallback for 4.9
-            $user = System::importStatic(BackendUser::class);
-            if( !$user->hasAccess('tl_member::groups', 'alexf') ) {
-                return $buttons;
-            }
         }
 
         // start sync for each member
         if( Input::post('FORM_SUBMIT') == 'tl_select' && isset($_POST['brevo_sync']) ) {
 
-            $objSession = System::getContainer()->get('session');
+            $objSession = $this->requestStack->getSession();
+
             $session = $objSession->all();
             $ids = $session['CURRENT']['IDS'] ?? [];
 

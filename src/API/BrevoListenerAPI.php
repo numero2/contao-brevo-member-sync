@@ -18,6 +18,7 @@ use Brevo\Client\ApiException;
 use Brevo\Client\Configuration;
 use Brevo\Client\Model\CreateContact;
 use Brevo\Client\Model\UpdateContact;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Date;
 use Contao\System;
 use Contao\Validator;
@@ -104,8 +105,12 @@ class BrevoListenerAPI {
         } catch( Exception $e ) {
 
             if( $e instanceof ApiException ) {
+
                 // if contact already exist get id and save it
-                if( strpos($e->getResponseBody(), "Contact already exist") !== false ) {
+                $body = $e->getResponseBody();
+                if( strpos($body, "Contact already exist") !== false
+                    || strpos($body, "Unable to create contact, email is already associated with another Contact") !== false
+                    ) {
 
                     $result = $apiContact->getContactInfo($brevoContact['email']);
 
@@ -115,7 +120,7 @@ class BrevoListenerAPI {
                 }
             }
 
-            $this->logger->error('Brevo API error while creating contact: '. $e->getMessage());
+            $this->logger->error('Brevo API error while creating contact: '. $e->getMessage(), ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
         }
 
         return 0;
@@ -175,8 +180,7 @@ class BrevoListenerAPI {
             return $brevoId;
 
         } catch( Exception $e ) {
-
-            $this->logger->error('Brevo API error while updating contact: '. $e->getMessage());
+            $this->logger->error('Brevo API error while updating contact: '. $e->getMessage(), ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
         }
 
         return 0;
@@ -228,7 +232,7 @@ class BrevoListenerAPI {
             return $attributes;
 
         } catch( Exception $e ) {
-            $this->logger->error('Brevo API error while getting contact attributes: '. $e->getMessage());
+            $this->logger->error('Brevo API error while getting contact attributes: '. $e->getMessage(), ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
         }
 
         return [];
