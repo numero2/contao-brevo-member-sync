@@ -29,7 +29,7 @@
         <target>Zuordnung Contao Mitglied zu Brevo</target>
     </trans-unit>
     <trans-unit id="tl_module.brevo_mapping.1">
-        <target>Bitte geben Sie unter "Schlüssel" an welches Contao Mitgliederfeld dem Feld unter "Wert" in Brevo zu geordnet werden soll.</target>
+        <target>Bitte geben Sie unter &quot;Schlüssel&quot; an welches Contao Mitgliederfeld dem Feld unter &quot;Wert&quot; in Brevo zu geordnet werden soll.</target>
     </trans-unit>
     <trans-unit id="tl_module.brevo_sync_with_member_groups.0">
         <target>Synchronisierung aktivieren für Mitgliedergruppen</target>

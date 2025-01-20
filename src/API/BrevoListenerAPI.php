@@ -240,7 +240,7 @@ class BrevoListenerAPI {
 
 
     /**
-     * Convert the given value into the format need by brvo
+     * Convert the given value into the format need by brevo
      *
      * @param mixed $value
      * @param array $typeConfig
@@ -261,10 +261,10 @@ class BrevoListenerAPI {
 
             $date = null;
             if( Validator::isDate($value) ) {
-                $oDate = new Date($value, Date:: getNumericDateFormat());
+                $oDate = new Date($value, Date::getNumericDateFormat());
                 $date = $oDate->timestamp;
             } else if( Validator::isDatim($value) ) {
-                $oDate = new Date($value, Date:: getNumericDatimFormat());
+                $oDate = new Date($value, Date::getNumericDatimFormat());
                 $date = $oDate->timestamp;
             } else if( Validator::isNatural($value) ) {
                 $date = $value;
