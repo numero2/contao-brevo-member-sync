@@ -17,6 +17,7 @@ use Brevo\Client\Api\ContactsApi;
 use Brevo\Client\ApiException;
 use Brevo\Client\Configuration;
 use Brevo\Client\Model\CreateContact;
+use Brevo\Client\Model\CreateDoiContact;
 use Brevo\Client\Model\UpdateContact;
 use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Date;
@@ -54,10 +55,12 @@ class BrevoListenerAPI {
      *
      * @param array $contact
      * @param array $listIds
+     * @param bool $useDoiMail
+     * @param array $doiMailAttributes
      *
      * @return int
      */
-    public function createContact( array $contact, array $listIds ): int {
+    public function createContact( array $contact, array $listIds, bool $useDoiMail=false, array $doiMailAttributes=[] ): int {
 
         if( empty($contact['EMAIL']) ) {
             return 0;
@@ -68,6 +71,10 @@ class BrevoListenerAPI {
         $apiContact = new ContactsApi(new Client(), $config);
 
         $brevoContact = new CreateContact();
+        if( $useDoiMail ) {
+            $brevoContact = new CreateDoiContact();
+        }
+
         $brevoContact['email'] = $contact['EMAIL'];
 
         if( !empty($listIds) ) {
@@ -98,7 +105,20 @@ class BrevoListenerAPI {
 
         try {
 
-            $result = $apiContact->createContact($brevoContact);
+            $result = null;
+            if( $useDoiMail ) {
+
+                $brevoContact['includeListIds'] = $brevoContact['listIds'];
+                unset($brevoContact['listIds']);
+
+                foreach( $doiMailAttributes as $key => $value ) {
+                    $brevoContact[$key] = $value;
+                }
+
+                $result = $apiContact->createDoiContact($brevoContact);
+            } else {
+                $result = $apiContact->createContact($brevoContact);
+            }
 
             return $result->getId();
 
