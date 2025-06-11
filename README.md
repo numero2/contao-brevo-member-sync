@@ -22,7 +22,8 @@ Installation
 Configuration
 --
 
-Activate the "Sync" checkbox in the Brevo legend within the suitable modules and then configure the required fields. Or activate the "Sync with member groups" and configure the Brevo fields inside the member groups.
+Activate the "Sync" checkbox in the Brevo legend within the suitable modules and then configure the required fields. Or activate the "Sync with member groups" and configure the Brevo fields inside the member groups.  
+To find which fields exist and their names in Brevo, navigate to `Kontakte` -> `Einstellungen` -> `Kontaktattribute`. There you can see a list of all fields and their typ.
 
 Contributors
 --

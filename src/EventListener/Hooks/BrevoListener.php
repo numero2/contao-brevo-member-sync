@@ -16,6 +16,7 @@ use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\FrontendUser;
 use Contao\MemberGroupModel;
 use Contao\MemberModel;
+use Contao\Module;
 use Contao\StringUtil;
 use numero2\BrevoMemberSyncBundle\API\BrevoListenerAPI;
 
@@ -26,14 +27,21 @@ class BrevoListener {
     /**
      * Create or update a user at Brevo
      *
-     * @param integer|Contao\FrontendUser $id
-     * @param array $arrData
-     * @param Contao\Module $module
+     * @param integer|Contao\FrontendUser|Contao\MemberModel $id
+     * @param array|Contao\Module $arrData
+     * @param Contao\Module|null $module
      *
      * @Hook("createNewUser")
      * @Hook("updatePersonalData")
+     * @Hook("activateAccount")
      */
-    public function createUpdateMember( $id, $arrData, $module ): void {
+    public function createUpdateMember( $id, $arrData, $module=null ): void {
+
+        // activation, change parameters
+        if( $id instanceof MemberModel ) {
+            $module = $arrData;
+            $arrData = null;
+        }
 
         if( empty($module->brevo_sync) || empty($module->brevo_api_key) ) {
             return;
@@ -56,10 +64,19 @@ class BrevoListener {
 
             $blnUpdate = !empty($brevoId);
 
+        // activation
+        } else if( $id instanceof MemberModel ) {
+
+            $oUser = $id;
+
         // mod_registration
         } else {
 
             $oUser = MemberModel::findById($id);
+
+            if( $this->skipOnRegistration($module) ) {
+                return;
+            }
         }
 
         $listIds = array_map(function( $a ) {
@@ -102,14 +119,21 @@ class BrevoListener {
     /**
      * Create or update a user at Brevo with data from member groups
      *
-     * @param int|Contao\FrontendUser $id
-     * @param array $arrData
-     * @param Contao\Module $module
+     * @param integer|Contao\FrontendUser|Contao\MemberModel $id
+     * @param array|Contao\Module $arrData
+     * @param Contao\Module|null $module
      *
      * @Hook("createNewUser")
      * @Hook("updatePersonalData")
+     * @Hook("activateAccount")
      */
-    public function createUpdateMemberForMemberGroups( $id, $arrData, $module ): void {
+    public function createUpdateMemberForMemberGroups( $id, $arrData, $module=null ): void {
+
+        // activation, change parameters
+        if( $id instanceof MemberModel ) {
+            $module = $arrData;
+            $arrData = null;
+        }
 
         if( empty($module->brevo_sync_with_member_groups) ) {
             return;
@@ -123,10 +147,20 @@ class BrevoListener {
             $oUser = $id;
             $userId = $oUser->id;
 
-            // mod_registration
+        // activation
+        } else if( $id instanceof MemberModel ) {
+
+            $oUser = $id;
+            $userId = $oUser->id;
+
+        // mod_registration
         } else {
 
             $userId = $id;
+
+            if( $this->skipOnRegistration($module) ) {
+                return;
+            }
         }
 
         if( $userId ) {
@@ -255,5 +289,28 @@ class BrevoListener {
         }
 
         return $merged;
+    }
+
+
+    /**
+     * Check if the module configuration for the registration can be skipped as the sync will be done on activation
+     *
+     * @param Contao\Module $module
+     *
+     * @return bool
+     */
+    private function skipOnRegistration( Module $module ): bool {
+
+        // if user will be activated after doi mail, first sync to brevo during activation
+        // contao core
+        if( $module->type === 'registration' && !empty($module->reg_activate) ) {
+            return true;
+        }
+        // notification_center
+        if( $module->type === 'registrationNotificationCenter' && !empty($module->nc_registration_auto_activate) ) {
+            return true;
+        }
+
+        return false;
     }
 }
