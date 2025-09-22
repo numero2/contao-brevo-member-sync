@@ -115,7 +115,9 @@ class BrevoListenerAPI {
                     $brevoContact[$key] = $value;
                 }
 
-                $result = $apiContact->createDoiContact($brevoContact);
+                // new contact will be available after doi confirmed
+                $apiContact->createDoiContact($brevoContact);
+                return 0;
             } else {
                 $result = $apiContact->createContact($brevoContact);
             }
